@@ -707,6 +707,9 @@
 
   /* ---------- Записи эфиров (закрытый раздел) ---------- */
   #panel-records [hidden] { display: none !important; }
+  .tab[hidden] { display: none; }
+  .rec-back { align-self: flex-start; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--gold); background: none; border: none; padding: 2px 0 6px; cursor: pointer; }
+  .rec-promo .card-desc b { color: var(--gold-strong); font-weight: 600; }
   .lock-card { align-items: center; text-align: center; padding: 26px 18px 20px; }
   .lock-ic {
     width: 54px; height: 54px; border-radius: 50%;
@@ -808,7 +811,7 @@
         <button class="tab" role="tab" id="tab-courses" aria-selected="false" aria-controls="panel-courses">Курсы</button>
         <button class="tab" role="tab" id="tab-home" aria-selected="true" aria-controls="panel-home">Главная</button>
         <button class="tab" role="tab" id="tab-lives" aria-selected="false" aria-controls="panel-lives">Эфиры</button>
-        <button class="tab" role="tab" id="tab-records" aria-selected="false" aria-controls="panel-records">Записи</button>
+        <button class="tab" role="tab" id="tab-records" aria-selected="false" aria-controls="panel-records" hidden>Записи</button>
       </div>
 
       <div class="panels">
@@ -928,6 +931,15 @@
 
         <div class="panel" id="panel-lives" role="tabpanel" aria-labelledby="tab-lives" data-active="false">
 
+          <div class="card rec-promo">
+            <span class="badge">Бесплатно</span>
+            <div class="card-title">Записи эфиров</div>
+            <p class="card-desc">Пропустили эфир или хотите переслушать? Записи прошедших эфиров доступны <b>бесплатно</b>: запросите доступ, и мы откроем его после одобрения.</p>
+            <button class="cta" type="button" data-go-tab="tab-records">Открыть записи
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+
           <div class="card post">
             <span class="badge">Анонс эфира</span>
             <div class="post-quote">&laquo;Только аср или ещё и зухр?&raquo;</div>
@@ -957,12 +969,14 @@
 
         <div class="panel" id="panel-records" role="tabpanel" aria-labelledby="tab-records" data-active="false">
 
+          <button class="rec-back" type="button" data-go-tab="tab-lives">&larr; К эфирам</button>
+
           <div class="card lock-card" id="rec-locked" hidden>
             <div class="lock-ic">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
             </div>
             <div class="card-title">Закрытый раздел</div>
-            <p class="card-desc">Записи эфиров доступны только по одобренной заявке. Запросите доступ — заявка уйдёт администратору.</p>
+            <p class="card-desc">Записи эфиров <b>бесплатны</b>, но открываются по заявке. Запросите доступ — после одобрения администратором раздел откроется.</p>
             <p class="rec-status" id="rec-status" role="status"></p>
             <button class="cta" type="button" id="rec-request">Запросить доступ</button>
           </div>
