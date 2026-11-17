@@ -1,0 +1,9 @@
+{
+  "name": "markaz-al-husna",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@vercel/blob": "2.9.0"
+  }
+}

@@ -1,5 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
 <title>Markaz Al-Husna</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Amiri:wght@400;700&family=Golos+Text:wght@400;500;600;700&display=swap">
 
 <style>
@@ -703,6 +704,76 @@
   .more-btn svg { transition: transform 0.2s ease; }
   .more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
   .car-count { align-self: center; font-size: 12px; color: var(--ink-faint); margin-top: -4px; }
+
+  /* ---------- Записи эфиров (закрытый раздел) ---------- */
+  #panel-records [hidden] { display: none !important; }
+  .lock-card { align-items: center; text-align: center; padding: 26px 18px 20px; }
+  .lock-ic {
+    width: 54px; height: 54px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--gold); background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+  }
+  .lock-card .cta { width: 100%; border: none; cursor: pointer; }
+  .cta[disabled] { opacity: 0.55; cursor: default; filter: none; }
+  .cta.ghost {
+    background: transparent; color: var(--gold);
+    border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent);
+  }
+  .rec-status { font-size: 12.5px; color: var(--ink-dim); line-height: 1.5; margin: 0; min-height: 1em; }
+  .rec-status.err { color: #E58C84; }
+
+  .ep { gap: 8px; }
+  .ep-top { display: flex; align-items: center; gap: 12px; }
+  .ep-play {
+    flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer;
+    display: grid; place-items: center; color: var(--gold-ink);
+    background: linear-gradient(180deg, var(--gold-strong), var(--gold));
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .ep-play:active { transform: scale(0.94); }
+  .ep-play:focus-visible, .ep-skip:focus-visible, .ep-speed button:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 2px; }
+  .ep-play .i-pause, .ep.playing .ep-play .i-play { display: none; }
+  .ep.playing .ep-play .i-pause { display: block; }
+  .ep-text { min-width: 0; flex: 1; }
+  .ep-title { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 17px; line-height: 1.25; color: var(--ink); overflow-wrap: anywhere; }
+  .ep-date { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+  .ep-ctrl { display: none; flex-direction: column; gap: 8px; padding-top: 4px; }
+  .ep.active .ep-ctrl { display: flex; }
+  .ep-seek { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+  .ep-seek input[type=range] { flex: 1; min-width: 0; accent-color: var(--gold); height: 24px; margin: 0; }
+  .ep-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .ep-skip, .ep-speed button {
+    font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+    color: var(--ink-dim); background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px;
+  }
+  .ep-speed { display: flex; gap: 6px; }
+  .ep-speed button[aria-pressed="true"] { color: var(--gold); border-color: color-mix(in srgb, var(--gold) 55%, transparent); }
+
+  .adm .card-title { font-size: 17px; }
+  .adm-sub { font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); margin: 6px 0 0; }
+  .adm-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 13px; }
+  .adm-row .who { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .adm-row .who small { display: block; color: var(--ink-faint); font-size: 11.5px; }
+  .adm-empty { font-size: 12.5px; color: var(--ink-faint); padding: 4px 0; }
+  .btn-sm {
+    font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0;
+    color: #E58C84; background: transparent; border: 1px solid rgba(229,140,132,0.4);
+    border-radius: 8px; padding: 6px 10px;
+  }
+  .adm input[type=text], .adm input[type=date], .adm input[type=file] {
+    width: 100%; font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    border-radius: 8px; padding: 9px 10px; color-scheme: dark;
+  }
+  .adm input:focus-visible { outline: 2px solid var(--gold-strong); outline-offset: 1px; }
+  .adm form { display: flex; flex-direction: column; gap: 8px; }
+  .adm form .cta { border: none; cursor: pointer; width: 100%; }
+  .adm-inline { display: flex; gap: 8px; }
+  .adm-inline .cta { width: auto; margin-top: 0; }
+  .progress { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; display: none; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--gold); transition: width 0.15s linear; }
 </style>
 
 <div class="page">
@@ -737,6 +808,7 @@
         <button class="tab" role="tab" id="tab-courses" aria-selected="false" aria-controls="panel-courses">Курсы</button>
         <button class="tab" role="tab" id="tab-home" aria-selected="true" aria-controls="panel-home">Главная</button>
         <button class="tab" role="tab" id="tab-lives" aria-selected="false" aria-controls="panel-lives">Эфиры</button>
+        <button class="tab" role="tab" id="tab-records" aria-selected="false" aria-controls="panel-records">Записи</button>
       </div>
 
       <div class="panels">
@@ -879,6 +951,52 @@
               <p class="post-text">Эфир уже прошёл, но его запись можно получить. Напишите менеджеру @manager_al_husna слово &laquo;ЗАПИСЬ&raquo;, и вы получите запись эфира.</p>
               <a class="cta" href="https://t.me/manager_al_husna?text=%D0%97%D0%90%D0%9F%D0%98%D0%A1%D0%AC" target="_blank" rel="noopener">Написать &laquo;ЗАПИСЬ&raquo; <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>
+          </div>
+
+        </div>
+
+        <div class="panel" id="panel-records" role="tabpanel" aria-labelledby="tab-records" data-active="false">
+
+          <div class="card lock-card" id="rec-locked" hidden>
+            <div class="lock-ic">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+            </div>
+            <div class="card-title">Закрытый раздел</div>
+            <p class="card-desc">Записи эфиров доступны только по одобренной заявке. Запросите доступ — заявка уйдёт администратору.</p>
+            <p class="rec-status" id="rec-status" role="status"></p>
+            <button class="cta" type="button" id="rec-request">Запросить доступ</button>
+          </div>
+
+          <div id="rec-open" hidden>
+            <div id="rec-list"></div>
+          </div>
+
+          <p class="rec-status" id="rec-loading" role="status">Загрузка…</p>
+
+          <div class="card adm" id="adm" hidden>
+            <span class="badge outline">Админ-панель</span>
+
+            <p class="adm-sub">Загрузить запись</p>
+            <form id="adm-upload" autocomplete="off">
+              <input type="file" id="adm-file" accept=".mp3,audio/mpeg" required aria-label="MP3-файл">
+              <input type="text" id="adm-title" maxlength="140" placeholder="Название" required aria-label="Название">
+              <input type="date" id="adm-date" required aria-label="Дата эфира">
+              <div class="progress" id="adm-progress"><i></i></div>
+              <button class="cta" type="submit" id="adm-submit">Загрузить</button>
+              <p class="rec-status" id="adm-upload-status" role="status"></p>
+            </form>
+
+            <p class="adm-sub">Одобренные</p>
+            <div id="adm-approved"></div>
+            <form id="adm-grant" autocomplete="off">
+              <div class="adm-inline">
+                <input type="text" id="adm-grant-id" inputmode="numeric" pattern="\d{1,15}" placeholder="Telegram ID" aria-label="Telegram ID">
+                <button class="cta ghost" type="submit">Выдать</button>
+              </div>
+            </form>
+
+            <p class="adm-sub">Записи</p>
+            <div id="adm-episodes"></div>
           </div>
 
         </div>
@@ -1105,6 +1223,368 @@
       if (e.key === 'Escape') {
         document.querySelectorAll('.sheet-overlay.open').forEach(closeSheet);
       }
+    });
+  })();
+
+  // ---------- Записи эфиров ----------
+  (function () {
+    var tab = document.getElementById('tab-records');
+    if (!tab) return;
+    var $ = function (id) { return document.getElementById(id); };
+    var tgApp = window.Telegram && window.Telegram.WebApp;
+    try { if (tgApp) { tgApp.ready(); } } catch (e) {}
+
+    function getInitData() {
+      var d = (tgApp && tgApp.initData) || '';
+      if (!d) {
+        try { d = new URLSearchParams(location.hash.replace(/^#/, '')).get('tgWebAppData') || ''; } catch (e) {}
+      }
+      return d;
+    }
+
+    function api(path, payload) {
+      var body = Object.assign({ initData: getInitData() }, payload);
+      return fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (data) {
+          if (!r.ok) { var err = new Error(data.error || 'Ошибка запроса'); err.status = r.status; throw err; }
+          return data;
+        });
+      });
+    }
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+
+    function fmtDate(s) {
+      try { return new Date(s + 'T00:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }); }
+      catch (e) { return s; }
+    }
+    function fmtTime(sec) {
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = Math.floor(sec % 60);
+      var mm = (h ? String(m).padStart(2, '0') : String(m)), ss = String(s).padStart(2, '0');
+      return (h ? h + ':' : '') + mm + ':' + ss;
+    }
+    function fmtSize(b) { return b >= 1048576 ? (b / 1048576).toFixed(1) + ' МБ' : Math.max(1, Math.round(b / 1024)) + ' КБ'; }
+
+    function confirmAsk(msg, cb) {
+      if (tgApp && tgApp.showConfirm) { try { tgApp.showConfirm(msg, function (ok) { if (ok) cb(); }); return; } catch (e) {} }
+      if (window.confirm(msg)) cb();
+    }
+
+    var ICON_PLAY = '<svg class="i-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>' +
+      '<svg class="i-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.2"/><rect x="13.5" y="5" width="4" height="14" rx="1.2"/></svg>';
+
+    // ----- состояние раздела -----
+    var loaded = false, S = null;
+
+    function setStatus(node, text, isErr) { node.textContent = text || ''; node.classList.toggle('err', !!isErr); }
+
+    function render() {
+      $('rec-loading').hidden = true;
+      var locked = !S.hasAccess;
+      $('rec-locked').hidden = !locked;
+      $('rec-open').hidden = locked;
+      $('adm').hidden = !S.isAdmin;
+
+      if (locked) {
+        var btn = $('rec-request'), st = $('rec-status');
+        var pending = S.requestStatus === 'pending';
+        btn.disabled = pending;
+        btn.textContent = pending ? 'Заявка отправлена' : 'Запросить доступ';
+        setStatus(st, pending ? 'Ожидайте решения администратора. Мы напишем вам в Telegram.' :
+          S.requestStatus === 'rejected' ? 'Заявка отклонена. Можно подать новую позже.' : '');
+      } else {
+        renderEpisodes();
+      }
+    }
+
+    function showError(e) {
+      $('rec-loading').hidden = false;
+      var msg = e && e.status === 401 || !getInitData()
+        ? 'Раздел работает только внутри Telegram. Откройте мини-апп через бота.'
+        : (e && e.message) || 'Не удалось загрузить';
+      setStatus($('rec-loading'), msg, true);
+    }
+
+    function load() {
+      if (!getInitData()) {
+        $('rec-locked').hidden = false;
+        $('rec-loading').hidden = true;
+        $('rec-request').disabled = true;
+        setStatus($('rec-status'), 'Раздел работает только внутри Telegram. Откройте мини-апп через бота.', true);
+        return;
+      }
+      api('/api/app', { action: 'state' }).then(function (d) {
+        S = d; loaded = true; render();
+        if (S.isAdmin) loadAdmin();
+      }).catch(showError);
+    }
+
+    tab.addEventListener('click', function () { if (!loaded) load(); });
+
+    $('rec-request').addEventListener('click', function () {
+      var btn = this; btn.disabled = true;
+      setStatus($('rec-status'), 'Отправляем…');
+      api('/api/app', { action: 'request' }).then(function (d) { S = d; render(); })
+        .catch(function (e) { btn.disabled = false; setStatus($('rec-status'), e.message, true); });
+    });
+
+    // ----- плеер -----
+    var audio = new Audio();
+    audio.preload = 'none';
+    var cur = null; // { id, card, expiresAt, seeking }
+    var speed = 1;
+    try { var sv = parseFloat(localStorage.getItem('rec-speed')); if ([1, 1.25, 1.5].indexOf(sv) >= 0) speed = sv; } catch (e) {}
+    var lastRetry = 0;
+
+    function cardOf(id) { return document.querySelector('.ep[data-id="' + id + '"]'); }
+
+    function fetchUrl(id) {
+      return api('/api/app', { action: 'url', id: id }).then(function (d) {
+        if (cur && cur.id === id) cur.expiresAt = d.expiresAt;
+        return d.url;
+      });
+    }
+
+    function syncUI() {
+      if (!cur) return;
+      var c = cur.card;
+      c.classList.toggle('playing', !audio.paused);
+      c.querySelector('.ep-play').setAttribute('aria-label', audio.paused ? 'Воспроизвести' : 'Пауза');
+      var seek = c.querySelector('.ep-seek input');
+      if (!cur.seeking) {
+        seek.max = isFinite(audio.duration) ? audio.duration : 0;
+        seek.value = audio.currentTime;
+      }
+      c.querySelector('.t-cur').textContent = fmtTime(audio.currentTime);
+      c.querySelector('.t-dur').textContent = fmtTime(audio.duration);
+    }
+
+    function activate(card, id) {
+      if (cur && cur.card !== card) {
+        cur.card.classList.remove('active', 'playing');
+      }
+      if (!cur || cur.id !== id) {
+        audio.pause();
+        cur = { id: id, card: card, expiresAt: 0, seeking: false };
+        audio.removeAttribute('src');
+      }
+      card.classList.add('active');
+    }
+
+    function playEpisode(card, id) {
+      activate(card, id);
+      if (audio.paused === false) { audio.pause(); return; }
+      var fresh = audio.src && cur.expiresAt - Date.now() > 60000;
+      if (fresh) { audio.play().catch(function () {}); return; }
+      var resumeAt = audio.src ? audio.currentTime : 0;
+      var status = card.querySelector('.ep-err');
+      setStatus(status, '');
+      fetchUrl(id).then(function (url) {
+        audio.src = url;
+        audio.playbackRate = speed;
+        audio.addEventListener('loadedmetadata', function once() {
+          audio.removeEventListener('loadedmetadata', once);
+          if (resumeAt) { try { audio.currentTime = resumeAt; } catch (e) {} }
+          audio.playbackRate = speed;
+          audio.play().catch(function () {});
+        });
+        audio.load();
+      }).catch(function (e) { setStatus(status, e.message || 'Не удалось получить ссылку', true); });
+    }
+
+    // ссылка истекла посреди прослушивания — берём новую и продолжаем с того же места
+    audio.addEventListener('error', function () {
+      if (!cur || !audio.src || Date.now() - lastRetry < 10000) return;
+      lastRetry = Date.now();
+      var id = cur.id, at = audio.currentTime, wasPlaying = !audio.paused;
+      fetchUrl(id).then(function (url) {
+        if (!cur || cur.id !== id) return;
+        audio.src = url;
+        audio.addEventListener('loadedmetadata', function once() {
+          audio.removeEventListener('loadedmetadata', once);
+          try { audio.currentTime = at; } catch (e) {}
+          audio.playbackRate = speed;
+          if (wasPlaying) audio.play().catch(function () {});
+        });
+        audio.load();
+      }).catch(function () {
+        setStatus(cur.card.querySelector('.ep-err'), 'Не удалось продолжить воспроизведение', true);
+      });
+    });
+    ['play', 'pause', 'timeupdate', 'durationchange', 'loadedmetadata', 'ended'].forEach(function (ev) { audio.addEventListener(ev, syncUI); });
+
+    function renderEpisodes() {
+      var list = $('rec-list');
+      list.textContent = '';
+      list.style.cssText = 'display:flex;flex-direction:column;gap:12px';
+      if (!S.episodes.length) {
+        list.appendChild(el('p', 'rec-status', 'Записей пока нет.'));
+        return;
+      }
+      S.episodes.forEach(function (ep) {
+        var card = el('div', 'card ep');
+        card.dataset.id = ep.id;
+
+        var top = el('div', 'ep-top');
+        var play = el('button', 'ep-play'); play.type = 'button'; play.innerHTML = ICON_PLAY;
+        play.setAttribute('aria-label', 'Воспроизвести');
+        var text = el('div', 'ep-text');
+        text.appendChild(el('div', 'ep-title', ep.title));
+        text.appendChild(el('div', 'ep-date', fmtDate(ep.date)));
+        top.appendChild(play); top.appendChild(text);
+
+        var ctrl = el('div', 'ep-ctrl');
+        var seekRow = el('div', 'ep-seek');
+        var tc = el('span', 't-cur', '0:00');
+        var range = document.createElement('input');
+        range.type = 'range'; range.min = 0; range.max = 0; range.step = 1; range.value = 0;
+        range.setAttribute('aria-label', 'Перемотка');
+        var td = el('span', 't-dur', '0:00');
+        seekRow.appendChild(tc); seekRow.appendChild(range); seekRow.appendChild(td);
+
+        var row = el('div', 'ep-row');
+        var skips = el('div', 'ep-speed');
+        var back = el('button', 'ep-skip', '−15 с'); back.type = 'button';
+        var fwd = el('button', 'ep-skip', '+15 с'); fwd.type = 'button';
+        skips.appendChild(back); skips.appendChild(fwd);
+        var sp = el('div', 'ep-speed');
+        [1, 1.25, 1.5].forEach(function (v) {
+          var b = el('button', null, v + 'x'); b.type = 'button';
+          b.setAttribute('aria-pressed', String(v === speed));
+          b.addEventListener('click', function () {
+            speed = v; audio.playbackRate = v;
+            try { localStorage.setItem('rec-speed', String(v)); } catch (e) {}
+            document.querySelectorAll('.ep-speed button[data-sp]').forEach(function (x) {
+              x.setAttribute('aria-pressed', String(Number(x.dataset.sp) === v));
+            });
+          });
+          b.dataset.sp = String(v);
+          sp.appendChild(b);
+        });
+        row.appendChild(skips); row.appendChild(sp);
+        ctrl.appendChild(seekRow); ctrl.appendChild(row);
+
+        var err = el('p', 'rec-status err ep-err');
+        card.appendChild(top); card.appendChild(ctrl); card.appendChild(err);
+
+        play.addEventListener('click', function () { playEpisode(card, ep.id); });
+        range.addEventListener('input', function () { if (cur) { cur.seeking = true; tc.textContent = fmtTime(Number(range.value)); } });
+        range.addEventListener('change', function () {
+          if (cur) { cur.seeking = false; }
+          if (audio.src) { try { audio.currentTime = Number(range.value); } catch (e) {} }
+        });
+        back.addEventListener('click', function () { if (cur && cur.card === card && audio.src) audio.currentTime = Math.max(0, audio.currentTime - 15); });
+        fwd.addEventListener('click', function () { if (cur && cur.card === card && audio.src) audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 15); });
+
+        list.appendChild(card);
+        if (cur && cur.id === ep.id) { cur.card = card; card.classList.add('active'); syncUI(); }
+      });
+    }
+
+    // ----- админ-панель -----
+    var A = null;
+    function loadAdmin() {
+      return api('/api/admin', { action: 'list' }).then(function (d) { A = d; renderAdmin(); })
+        .catch(function () {});
+    }
+
+    function renderAdmin() {
+      var ap = $('adm-approved'); ap.textContent = '';
+      if (!A.approved.length) ap.appendChild(el('div', 'adm-empty', 'Пока никого.'));
+      A.approved.forEach(function (u) {
+        var row = el('div', 'adm-row');
+        var who = el('div', 'who', u.name || 'Без имени');
+        who.appendChild(el('small', null, (u.username ? '@' + u.username + ' · ' : '') + 'ID ' + u.id));
+        var del = el('button', 'btn-sm', 'Удалить доступ'); del.type = 'button';
+        del.addEventListener('click', function () {
+          confirmAsk('Удалить доступ для ' + (u.name || u.id) + '?', function () {
+            api('/api/admin', { action: 'revoke', userId: u.id }).then(function (d) { A = d; renderAdmin(); })
+              .catch(function (e) { alert(e.message); });
+          });
+        });
+        row.appendChild(who); row.appendChild(del); ap.appendChild(row);
+      });
+
+      var eps = $('adm-episodes'); eps.textContent = '';
+      if (!A.episodes.length) eps.appendChild(el('div', 'adm-empty', 'Записей нет.'));
+      A.episodes.forEach(function (ep) {
+        var row = el('div', 'adm-row');
+        var who = el('div', 'who', ep.title);
+        who.appendChild(el('small', null, fmtDate(ep.date) + ' · ' + fmtSize(ep.size)));
+        var del = el('button', 'btn-sm', 'Удалить'); del.type = 'button';
+        del.addEventListener('click', function () {
+          confirmAsk('Удалить запись «' + ep.title + '» вместе с файлом?', function () {
+            if (cur && cur.id === ep.id) { audio.pause(); audio.removeAttribute('src'); cur = null; }
+            api('/api/admin', { action: 'delete-episode', id: ep.id }).then(function (d) {
+              A = d; renderAdmin();
+              if (S) { S.episodes = S.episodes.filter(function (x) { return x.id !== ep.id; }); renderEpisodes(); }
+            }).catch(function (e) { alert(e.message); });
+          });
+        });
+        row.appendChild(who); row.appendChild(del); eps.appendChild(row);
+      });
+    }
+
+    $('adm-grant').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var inp = $('adm-grant-id'), id = inp.value.trim();
+      if (!/^\d{1,15}$/.test(id)) return;
+      api('/api/admin', { action: 'grant', userId: id }).then(function (d) { A = d; inp.value = ''; renderAdmin(); })
+        .catch(function (err) { alert(err.message); });
+    });
+
+    var MAX_BYTES = 300 * 1024 * 1024;
+    $('adm-date').value = new Date().toISOString().slice(0, 10);
+    $('adm-file').addEventListener('change', function () {
+      var f = this.files[0], t = $('adm-title');
+      if (f && !t.value) t.value = f.name.replace(/\.mp3$/i, '').replace(/[_]+/g, ' ');
+    });
+
+    $('adm-upload').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var file = $('adm-file').files[0], title = $('adm-title').value.trim(), date = $('adm-date').value;
+      var st = $('adm-upload-status'), btn = $('adm-submit'), pr = $('adm-progress');
+      if (!file || !title || !date) return;
+      if (!/\.mp3$/i.test(file.name)) return setStatus(st, 'Нужен файл .mp3', true);
+      if (file.size > MAX_BYTES) return setStatus(st, 'Файл больше 300 МБ', true);
+
+      btn.disabled = true; setStatus(st, 'Готовим загрузку…');
+      pr.style.display = 'block'; pr.firstElementChild.style.width = '0';
+      var newId;
+      api('/api/admin', { action: 'upload-url', size: file.size }).then(function (d) {
+        newId = d.id;
+        return new Promise(function (resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('PUT', d.uploadUrl);
+          xhr.upload.onprogress = function (ev) {
+            if (!ev.lengthComputable) return;
+            var p = Math.round(ev.loaded / ev.total * 100);
+            pr.firstElementChild.style.width = p + '%';
+            setStatus(st, 'Загрузка: ' + p + '%');
+          };
+          xhr.onload = function () { xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error('Хранилище ответило ' + xhr.status)); };
+          xhr.onerror = function () { reject(new Error('Сеть оборвалась во время загрузки')); };
+          xhr.send(file);
+        });
+      }).then(function () {
+        return api('/api/admin', { action: 'add-episode', id: newId, title: title, date: date });
+      }).then(function (d) {
+        A = d; renderAdmin();
+        $('adm-upload').reset(); $('adm-date').value = new Date().toISOString().slice(0, 10);
+        setStatus(st, 'Готово: запись добавлена.');
+        return api('/api/app', { action: 'state' }).then(function (s) { S = s; renderEpisodes(); });
+      }).catch(function (err) { setStatus(st, err.message, true); })
+        .then(function () { btn.disabled = false; pr.style.display = 'none'; });
     });
   })();
 </script>
